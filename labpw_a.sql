@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 06, 2021 at 04:01 PM
+-- Generation Time: Jan 12, 2021 at 12:26 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.3
 
@@ -33,19 +33,22 @@ CREATE TABLE `akun` (
   `nama` varchar(32) NOT NULL,
   `username` varchar(32) NOT NULL,
   `email` varchar(32) NOT NULL,
-  `password` varchar(32) NOT NULL
+  `password` varchar(32) NOT NULL,
+  `level` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `akun`
 --
 
-INSERT INTO `akun` (`id`, `nama`, `username`, `email`, `password`) VALUES
-(1, 'Alvin Daeli', 'alvin123', 'alvin@example.com', '25d55ad283aa400af464c76d713c07ad'),
-(2, 'Tes', 'tes12345', 'tes@tes.tes', 'ed2b1f468c5f915f3f1cf75d7068baae'),
-(3, 'Teslagi', 'tes123123', 'yoo@bla.bla', '00cedcf91beffa9ee69f6cfe23a4602d'),
-(4, 'tesupdate', 'tes123123123', 'tes@ye.teslaagi', '40587bff0e72b6fdbba30c40c95e148a'),
-(8, 'Tesbaru', 'tes1234567', 'tes1234567@tes.in', '25d55ad283aa400af464c76d713c07ad');
+INSERT INTO `akun` (`id`, `nama`, `username`, `email`, `password`, `level`) VALUES
+(1, 'Alvin Daeli', 'alvin123', 'alvin@example.com', '25d55ad283aa400af464c76d713c07ad', 2),
+(2, 'Tes', 'tes12345', 'tes@tes.tes', 'ed2b1f468c5f915f3f1cf75d7068baae', 0),
+(3, 'Teslagi', 'tes123123', 'yoo@bla.bla', '00cedcf91beffa9ee69f6cfe23a4602d', 0),
+(4, 'tesupdate', 'tes123123123', 'tes@ye.teslaagi', '40587bff0e72b6fdbba30c40c95e148a', 0),
+(12, 'Pengguna', 'pengguna123', 'asda@sda.as', 'f5bb0c8de146c67b44babbf4e6584cc0', 0),
+(13, 'Admin', 'admin12345', 'adnmin@amd.asd', 'ed2b1f468c5f915f3f1cf75d7068baae', 1),
+(14, 'Admin Baru', 'admin1212', 'adnmin@amd.asdasd', '8ce87b8ec346ff4c80635f667d1592ae', 1);
 
 -- --------------------------------------------------------
 
@@ -83,7 +86,7 @@ ALTER TABLE `mahasiswa`
 -- AUTO_INCREMENT for table `akun`
 --
 ALTER TABLE `akun`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `mahasiswa`
