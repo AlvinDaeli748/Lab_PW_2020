@@ -15,6 +15,9 @@
         <!-- Login/Logout -->
         <?php if(!isset($_SESSION['userLogin'])): ?>
             <h3>Halo Guest</h3>
+            <?php if(isset($_SESSION['guest'])){
+                echo "<h5>Anda belum Login, Silahkan Login dibawah ini.</h5>";
+            } ?>
             <!-- Trigger the modal with a button -->
             <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#loginModal">Login</button>
             <?php elseif($userSession != NULL): ?>
@@ -96,61 +99,98 @@
 
         <!-- Read Data from Database -->
             <h3>Data dari Database</h3>
-            <table>
-                <tr>
-                    <th>Id</th>
-                    <th>Nama</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th colspan="2">Aksi</th>
-                </tr>
-                    <?php
-                        $data = $db->prepare("SELECT id,nama,username,email FROM akun");
-                        $data->execute();
-                        
-                        $hasil = $data;
-                        foreach($hasil as $x):
+            <?php if(!isset($_SESSION['userLogin'])){
+                    echo "<h3>Login terlebih dahulu untuk melihat database.</h3>";
+            } else {
+                    if($row['level'] == FALSE){
+                        echo "<h3>Anda tidak memiliki akses ke database.</h3>";
                     ?>
-                <tr>
-                    <td><?php echo $x['id']; ?></td>
-                    <td><?php echo $x['nama']; ?></td>
-                    <td><?php echo $x['username']; ?></td>
-                    <td><?php echo $x['email']; ?></td>
-                    <td>
                         <form action="update.php" method="POST">
-                            <input type="text" name="id" value="<?php echo $x['id']; ?>" hidden>
-                            <input type="submit" name="update_data" value="Update">
+                            <input type="text" name="id" value="<?php echo $row['id']; ?>" hidden>
+                            <input type="submit" name="update_data" value="Update Akun Anda">
                         </form>
-                    </td>
-                    <td>
-                        <form onsubmit="return confirm('Are you sure want to delete this Data?');" method="POST">
-                            <input type="text" name="id" value="<?php echo $x['id']; ?>" hidden>
-                            <input type="submit" name="delete_data" value="Delete">
-                        </form>
-                    </td>
-                </tr>
-                    <?php endforeach; ?>
-            </table>
+                    <?php
+                    }
+                    elseif($row['level'] == TRUE){
+                        if($row['level'] == 2){
+                            echo "<form action='admin.php'>
+                                <input type='submit' value='Buat Admin'>
+                            </form>";
+                        }
+                        ?>
+                        <table>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nama</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th colspan="2">Aksi</th>
+                            </tr>
+                                <?php
+                                    // Fetch Data sesuai Level Akun
+                                    if($row['level'] == 2){
+                                        $sql = "SELECT * FROM akun";
+                                    } else {
+                                        $sql = "SELECT * FROM akun WHERE level != 2";
+                                    }
+                                    $data = mysqli_query($db, $sql);
+
+                                    while($x = mysqli_fetch_array($data)){
+                                ?>
+                            <tr>
+                                <td><?php echo $x['id']; ?></td>
+                                <td><?php echo $x['nama']; ?></td>
+                                <td><?php echo $x['username']; ?></td>
+                                <td><?php echo $x['email']; ?></td>
+                                <?php if($x['level'] < $userlevel || $x['id'] == $userid){ ?>
+                                    <td>
+                                        <form action="update.php" method="POST">
+                                            <input type="text" name="id" value="<?php echo $x['id']; ?>" hidden>
+                                            <input type="submit" name="update_data" value="Update">
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form onsubmit="return confirm('Are you sure want to delete this Data?');" method="POST">
+                                            <input type="text" name="id" value="<?php echo $x['id']; ?>" hidden>
+                                            <input type="submit" name="delete_data" value="Delete">
+                                        </form>
+                                    </td>
+                                <?php } ?>
+                            </tr>
+                                <?php } ?>
+                        </table>
+
+
+                    <?php } 
+                } ?>
             <?php 
                 if(isset($_POST['delete_data'])){
                     $id = $_POST['id'];
-                    $del = "DELETE FROM akun WHERE id=$id";
-
-                    $db->exec($del);
-                    echo "<script>
-                            alert('Data succesfully deleted.');
-                            window.location.replace('index.php');
+                    if($id == $userid){
+                        echo "<script>
+                            alert('Lah itu Akun Anda');
                     </script>";
+                    } else {
+                        $del = "DELETE FROM akun WHERE id=$id";
+
+                        mysqli_query($db, $del);
+                        echo "<script>
+                                alert('Data succesfully deleted.');
+                                window.location.replace('index.php');
+                        </script>";
+                    }
                 }
             ?>
             <!-- Alert Status -->
-            <?php if(!isset($_SESSION['loginSuccess'])):?>
+            <?php if(isset($_SESSION['loginFailed'])):?>
                 <script>
-                    alert("Login Failed");
+                    alert("Terjadi kesalahan dalam Login.");
+                <?php $_SESSION['loginFailed'] = NULL; ?>
                 </script>
             <?php elseif(isset($_SESSION['loginSuccess'])):?>
                 <script>
                     alert("Login Success");
+                <?php $_SESSION['loginSuccess'] = NULL; ?>
                 </script>
             <?php endif; ?>
     </body>
