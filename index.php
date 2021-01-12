@@ -8,6 +8,15 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <style>
+            th{
+                text-align: center;
+            }
+            td, th{
+                text-align: center;
+                width: max-content;
+            }
+        </style>
     </head>
     <body>
         <h1>Selamat Datang</h1>
@@ -118,12 +127,13 @@
                             </form>";
                         }
                         ?>
-                        <table>
+                        <table border="2">
                             <tr>
-                                <th>Id</th>
+                                <th>No</th>
                                 <th>Nama</th>
                                 <th>Username</th>
                                 <th>Email</th>
+                                <th>Level</th>
                                 <th colspan="2">Aksi</th>
                             </tr>
                                 <?php
@@ -134,14 +144,15 @@
                                         $sql = "SELECT * FROM akun WHERE level != 2";
                                     }
                                     $data = mysqli_query($db, $sql);
-
+                                    $no = 1;
                                     while($x = mysqli_fetch_array($data)){
                                 ?>
                             <tr>
-                                <td><?php echo $x['id']; ?></td>
+                                <td><?php echo $no++ ?></td>
                                 <td><?php echo $x['nama']; ?></td>
                                 <td><?php echo $x['username']; ?></td>
                                 <td><?php echo $x['email']; ?></td>
+                                <td><?php echo $x['level']; ?></td>
                                 <?php if($x['level'] < $userlevel || $x['id'] == $userid){ ?>
                                     <td>
                                         <form action="update.php" method="POST">
