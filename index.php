@@ -113,7 +113,7 @@
                     }
                     elseif($row['level'] == TRUE){
                         if($row['level'] == 2){
-                            echo "<form action='admin.php'>
+                            echo "<form action='admin.html'>
                                 <input type='submit' value='Buat Admin'>
                             </form>";
                         }
