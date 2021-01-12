@@ -6,14 +6,13 @@
     $email = $_POST['email'];
     $password = md5($_POST['password']);
     
-    if($db){
         $sql = "UPDATE akun SET nama='$nama',username='$username',email='$email',password='$password' WHERE id=$id";
-        $db->exec($sql);
+        mysqli_query($db, $sql);
         echo "<script>
                     alert('Yay, Update berhasil!'); 
                     window.location.replace('index.php');
                 </script>";
-    } elseif(isset($error)){
+    if(mysqli_error($error)){
         echo "Yah, Error : $error";
     }
 ?>

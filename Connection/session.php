@@ -1,16 +1,17 @@
-<?php 
+<?php
     include "conn.php";
     session_start();
     $check = $_SESSION['userLogin'] ?? NULL;
-    $adm = $db->prepare('SELECT * FROM akun WHERE username = :username');
-    $adm->execute(array(
-        ':username' => $check
-    ));
-    $row = $adm->fetch(PDO::FETCH_ASSOC);
+    $adm = mysqli_query($db, "SELECT * FROM akun WHERE username = '$check'");
+
+    $row = mysqli_fetch_array($adm);
     if(!isset($row)){
-        echo "<script>alert('Unknown Username');</script>";
+        $_SESSION['guest'] = TRUE;
     } else {
-        $userSession = $row['username'] ?? NULL;
+        $_SESSION['guest'] = NULL;
+        $userSession = $row['username'];
+        $userid = $row['id'];
+        $userlevel = $row['level'];
     }
 
 ?>

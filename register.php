@@ -5,14 +5,14 @@
     $email = $_POST['email'];
     $password = md5($_POST['password']);
 
-    if($db){
-        $sql = "INSERT INTO akun (nama,username,email,password) VALUES ('$nama','$username','$email','$password')";
-        $db->exec($sql);
-        echo "<script>
-                    alert('Yay, Registrasi berhasil!'); 
-                    window.location.replace('index.php');
-                </script>";
-    } elseif(isset($error)){
+    $sql = "INSERT INTO akun (nama,username,email,password) VALUES ('$nama','$username','$email','$password')"; 
+    mysqli_query($db, $sql);
+    echo "<script>
+        alert('Yay, Registrasi berhasil!'); 
+        window.location.replace('index.php');
+        </script>";
+    if(mysqli_error($err)){
         echo "Yah, Error : $error";
     }
+
 ?>

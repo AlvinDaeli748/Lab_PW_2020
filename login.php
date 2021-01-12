@@ -1,19 +1,22 @@
 <?php 
     include "Connection/conn.php";
     session_start();
-    $adm = $db->prepare('SELECT * FROM akun WHERE username = :username AND password = :password');
-    $adm->execute(array(
-        ':username' => $_POST['username'],
-        ':password' => md5($_POST['password'])
-    ));
-    $row = $adm->fetch(PDO::FETCH_ASSOC);
+    $username = $_POST['username'];
+    $password = md5($_POST['password']);
+
+    $adm = mysqli_query($db, "SELECT * FROM akun WHERE username = '$username' AND password = '$password'");
+
+    $row = mysqli_fetch_array($adm);
 
     if(empty($row['username'])){
         $_SESSION['loginSuccess'] = NULL;
+        $_SESSION['loginFailed'] = TRUE;
         header("location:index.php");
     } else {
         $_SESSION['userLogin'] = $_POST['username'];
+        $_SESSION['loginFailed'] = NULL;
         $_SESSION['loginSuccess'] = TRUE;
         header("location:index.php");
     }
+    
 ?>

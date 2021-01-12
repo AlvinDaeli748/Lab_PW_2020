@@ -6,11 +6,10 @@
     <body>
         <?php 
             $id = $_POST['id'];
-            $search = $db->prepare("SELECT * FROM akun WHERE id=$id");
-            $search->execute();
-            $hasil = $search;
+            $search = mysqli_query($db, "SELECT * FROM akun WHERE id='$id'");
+            
 
-            foreach($hasil as $x):
+            while($x = mysqli_fetch_array($search)){
         ?>
         <h3>Update Data</h3>
             <form action="execUpdate.php" method="POST">
@@ -37,7 +36,7 @@
                     <tr>
                         <td>Password</td>
                         <td>
-                            <input type="password" name="password" minlength="8" maxlength="16" value="<?php echo $x['password']; ?>" placeholder="minimum 8 characters" required>
+                            <input type="password" name="password" minlength="8" maxlength="16" value="" placeholder="minimum 8 characters" required>
                         </td>
                     </tr>
                     <tr>
@@ -50,6 +49,6 @@
                     </tr>
                 </table>
             </form>
-            <?php endforeach; ?>
+            <?php } ?>
     </body>
 </html>
