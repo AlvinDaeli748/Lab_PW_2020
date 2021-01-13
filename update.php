@@ -6,6 +6,12 @@
     <body>
         <?php 
             $id = $_POST['id'];
+            if(!isset($id)){
+                echo "<script>
+                        alert('Unknown ID');
+                        window.location.replace('index.php');
+                </script>";
+            }
             $search = mysqli_query($db, "SELECT * FROM akun WHERE id='$id'");
             
 
