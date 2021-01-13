@@ -1,3 +1,15 @@
+<?php 
+    include "Connection/session.php";
+    if(!isset($_SESSION['userLogin'])){
+        echo "<script> 
+                alert('Anda tidak memiliki akses.');
+                window.location.replace('index.php');
+                </script>";
+        // header("location:index.php");
+    }
+
+?>
+
 <html>
     <head>
         <title>Register Admin</title>
